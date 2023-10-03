@@ -3,6 +3,7 @@ package co.shuyen.gamebackend.consumers;
 
 // Importing required classes
 import co.shuyen.gamebackend.components.BitcoinPriceReader;
+import co.shuyen.gamebackend.components.adapter.GameManager;
 import co.shuyen.gamebackend.interfaces.IPriceReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -24,8 +25,7 @@ public class KafkaConsumer {
     @KafkaListener(topics = "game-message", groupId = "group_id")
     public void
     consume(String message) throws URISyntaxException, IOException {
-        // Print statement
         var price = priceReader.getPrice();
-        System.out.println("message = " + price);
+        new GameManager().CreateGame(message, java.time.LocalDateTime.now(), price);
     }
 }
